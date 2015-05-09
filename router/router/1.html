@@ -1,0 +1,89 @@
+<html>
+	<head>
+		<script type="text/javascript" src="./lib/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="./lib/underscore.js"></script>
+		<script type="text/javascript" src="./lib/backbone.js"></script>
+		<script type="text/javascript">
+
+			// Backbone Router大写（js严格区分大小写）
+			// 必须extend一下，才能使用
+			var router = Backbone.Router.extend({
+				routes: {
+					"abc": "route_abc",  // #abc
+					"bbc": "route_bbc",  // #bbc
+					"cbc": "route_cbc",	 // #cbc
+					"xx/xxxxxx": "xx_xx" // #xx/xxxxxx
+				}, // 配置的对象结尾必须用逗号
+
+				route_abc: function () {
+					alert("abc");
+				}, // 配置的方法结尾必须用逗号
+
+				route_bbc: function () {
+					alert("bbc");
+				}, // 配置的方法结尾必须用逗号
+
+				route_cbc: function () {
+					alert("cbc");
+				}, // 配置的方法结尾必须用逗号
+
+				xx_xx: function () {
+					alert("#xx/xxxxxx");
+				}
+				// 最后一个不要逗号
+			});
+
+			// 必须new
+			new router();
+
+			// 配置完router以后，必须写这句话，才能激活router 
+			// 如果有一天，因为某个特定的时点，想禁用router的检测，可以用另外的方法将其注销，如果又想激活，则还得需要运行这句话
+			Backbone.history.start();
+
+			$(function () {
+				$('#abc-btn').on('click', function () {
+					// window.location.href = 'http://www.baidu.com';
+					window.location.hash = 'abc';
+				});
+
+				$('#bbc-btn').on('click', function () {
+					window.location.hash = 'bbc';
+				});
+
+				$('#cbc-btn').on('click', function () {
+					window.location.hash = 'cbc';
+				});
+
+				$('#dbc-btn').on('click', function () {
+
+					// router 是检测hash的，而且是检测它的变化
+					// 先点cbc或许会有反应，但是再点dbc，router不会有反应，因为hash没有变化
+					window.location.hash = 'cbc';
+				});
+
+				$('#xx').on('click', function () {
+					window.location.hash = 'xx/xxxxxx';
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<button id="abc-btn">abc</button>
+		<button id="bbc-btn">bbc</button>
+		<button id="cbc-btn">cbc</button>
+		<button id="dbc-btn">dbc</button>
+
+		<button id="xx">xx</button>
+
+		<!-- button里，改hash，可以完全拿a标签的href写 -->
+		<br/>
+
+		<!-- <a href="http://www.baidu.com">baidu</a> -->
+		<a href="#abc">abc</a>
+		<a href="#bbc">bbc</a>
+		<a href="#cbc">cbc</a>
+		<a href="#cbc">dbc</a>
+		<a href="#xx/xxxxxx">xx</a>
+	</body>
+</html>
